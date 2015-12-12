@@ -2,13 +2,12 @@ var express = require('express');
 var app = express();
 
 /*handlebars模板引擎配置*/
-var hbs = require('express-hbs');
-app.engine('hbs', hbs.express4({
-    defaultLayout: __dirname + '/views/layouts/main.hbs',
-    layoutsDir: __dirname + '/views/layouts'
-}));
-app.set('view engine', 'hbs');
-app.set('views', __dirname + '/views');
+var handlebars = require('express3-handlebars')
+    .create({
+        defaultLayout: 'main'
+    });
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
 
 /*监听端口*/
 app.set('port', process.env.PORT); // || 3000);
