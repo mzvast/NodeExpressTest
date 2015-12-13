@@ -29,6 +29,7 @@
             $('.newsletterForm').on('submit', function(evt){
                 evt.preventDefault();
                 var action = $(this).attr('action');
+                var $container = $(this).closest('.formContainer');
                 $.ajax({
                     url: action,
                     type: 'POST',
