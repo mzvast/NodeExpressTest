@@ -53,6 +53,7 @@ app.use(function(req, res, next) {
     res.locals.partials.weatherContext = getWeatherData();
     next();
 });
+app.use(require('body-parser')());
 /*路由*/
 app.get('/', function(req, res) {
     res.render('home');
@@ -75,16 +76,35 @@ app.get('/about', function(req, res) {
     });
 });
 
-app.get('/nursery-rhyme', function(req, res){
-	res.render('nursery-rhyme');
+app.get('/nursery-rhyme', function(req, res) {
+    res.render('nursery-rhyme');
 });
-app.get('/data/nursery-rhyme', function(req, res){
-	res.json({
-		animal: 'squirrel',
-		bodyPart: 'tail',
-		adjective: 'bushy',
-		noun: 'heck',
-	});
+app.get('/data/nursery-rhyme', function(req, res) {
+    res.json({
+        animal: 'squirrel',
+        bodyPart: 'tail',
+        adjective: 'bushy',
+        noun: 'heck',
+    });
+});
+app.get('/newsletter', function(req, res) {
+    // we will learn about CSRF later...for now, we just
+    // provide a dummy value
+    res.render('newsletter', {
+        csrf: 'CSRF token goes here'
+    });
+});
+app.post('/process', function(req, res) {
+    if (req.xhr || req.accepts('json,html') === 'json') {
+        // if there were an error, we would send { error: 'error description' }
+        res.send({
+            success: true
+        });
+    }
+    else {
+        // if there were an error, we would redirect to an error page
+        res.redirect(303, '/thank-you');
+    }
 });
 
 // 404 catch-all handler (middleware)
