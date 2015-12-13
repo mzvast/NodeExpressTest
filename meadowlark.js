@@ -46,7 +46,13 @@ function getWeatherData() {
         }, ],
     };
 }
-
+/*中间件*/
+//For Page Testing
+app.use(function(req, res, next) {
+    res.locals.showTests = app.get('env') !== 'production' &&
+        req.query.test === '1';
+    next();
+});
 // middleware to add weather data to context
 app.use(function(req, res, next) {
     if (!res.locals.partials) res.locals.partials = {};
@@ -55,6 +61,15 @@ app.use(function(req, res, next) {
 });
 app.use(require('body-parser')());
 /*路由*/
+app.get('/tours/hood-river', function(req, res) {
+    res.render('tours/hood-river');
+});
+app.get('/tours/oregon-coast', function(req, res){
+	res.render('tours/oregon-coast');
+});
+app.get('/tours/request-group-rate', function(req, res) {
+    res.render('tours/request-group-rate');
+});
 app.get('/', function(req, res) {
     res.render('home');
 });
@@ -72,7 +87,8 @@ app.get('/about', function(req, res) {
     var randomFortune =
         fortunes[Math.floor(Math.random() * fortunes.length)];
     res.render('about', {
-        fortune: randomFortune
+        fortune: randomFortune,
+        pageTestScript: '/qa/tests-about.js'
     });
 });
 
